@@ -59,7 +59,7 @@ class DataFrame(object):
                 raise TypeError('The values in the column are strings and this operation cannot be performed.')
         return None
 
-    # Class method to return 'Min' value in a column
+    # Instance method to return 'Min' value in a column
     def min(self, column):
         col_list = [row[column] for row in self.data]
         col_type = DataFrame.get_type_of_column(col_list)
@@ -68,7 +68,7 @@ class DataFrame(object):
         else:
             return None
 
-    # Class method to return 'Max' value in a column
+    # Instance method to return 'Max' value in a column
     def max(self, column):
         col_list = [row[column] for row in self.data]
         col_type = DataFrame.get_type_of_column(col_list)
@@ -77,7 +77,7 @@ class DataFrame(object):
         else:
             return None
 
-    # Class method to return 'Median' value of a column
+    # Instance method to return 'Median' value of a column
     def median(self, column):
         col_list = [row[column] for row in self.data]
         col_type = DataFrame.get_type_of_column(col_list)
@@ -92,7 +92,7 @@ class DataFrame(object):
         else:
             raise TypeError('The values in the column are strings and this operation cannot be performed.')
 
-    # Class method to return 'Mean' value of a column
+    # Instance method to return 'Mean' value of a column
     def mean(self, column):
         col_list = [row[column] for row in self.data]
         col_type = DataFrame.get_type_of_column(col_list)
@@ -105,7 +105,7 @@ class DataFrame(object):
         else:
             raise TypeError('The values in the column are strings and this operation cannot be performed.')
 
-    # Class method to return 'Sum' value of a column
+    # Instance method to return 'Sum' value of a column
     def sum(self, column):
         col_list = [row[column] for row in self.data]
         col_type = DataFrame.get_type_of_column(col_list)
@@ -117,7 +117,7 @@ class DataFrame(object):
         else:
             raise TypeError('The values in the column are strings and this operation cannot be performed.')
 
-    # Class method to return 'Standard Deviation' value of a column
+    # Instance method to return 'Standard Deviation' value of a column
     def std(self, column):
         col_list = [row[column] for row in self.data]
         col_type = DataFrame.get_type_of_column(col_list)
@@ -139,7 +139,7 @@ class DataFrame(object):
     # ******************End of Task-#3 **********************************************
 
     # ******************Task-#4 ************************************************
-    # Class method to add rows into data
+    # Instance method to add rows into data
     def add_rows(self, list_of_lists):
         length = len(self.data[0])
         for row in list_of_lists:
@@ -151,7 +151,7 @@ class DataFrame(object):
     # ******************End of Task-#4 ************************************************
 
     # ******************Task-#5 ************************************************
-    # Class method to add a column into data
+    # Instance method to add a column into data
     def add_columns(self, list_of_values, col_name):
         length_rows_data = len(self.data)
         length_values = len(list_of_values)
