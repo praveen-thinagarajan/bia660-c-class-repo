@@ -25,12 +25,12 @@ class DataFrame(object):
 
     # Class method that returns type of a column of data
     @classmethod
-    def get_type_of_column(self, column, col_list):
+    def get_type_of_column(cls, col_list):
         # Checking if all items of the column are integers
         is_int = True
         for col in col_list:
             try:
-                if isinstance(int(col), int) == False:
+                if not isinstance(int(col), int):
                     is_int = False
             except ValueError:
                 is_int = False
@@ -41,7 +41,7 @@ class DataFrame(object):
             is_date = True
             # try:
             for col in col_list:
-                if (isinstance(col, int)):
+                if isinstance(col, int):
                     is_date = False
                 else:
                     try:
@@ -60,61 +60,55 @@ class DataFrame(object):
         return None
 
     # Class method to return 'Min' value in a column
-    @classmethod
     def min(self, column):
-        col_list = [row[column] for row in df.data]
-        col_type = self.get_type_of_column(column, col_list)
+        col_list = [row[column] for row in self.data]
+        col_type = DataFrame.get_type_of_column(col_list)
         if col_type == int or col_type == datetime:
             return min(col_list)
         else:
             return None
 
     # Class method to return 'Max' value in a column
-    @classmethod
     def max(self, column):
-        col_list = [row[column] for row in df.data]
-        col_type = self.get_type_of_column(column, col_list)
-        if (col_type == int or col_type == datetime):
+        col_list = [row[column] for row in self.data]
+        col_type = DataFrame.get_type_of_column(col_list)
+        if col_type == int or col_type == datetime:
             return max(col_list)
         else:
             return None
 
     # Class method to return 'Median' value of a column
-    @classmethod
     def median(self, column):
-        col_list = [row[column] for row in df.data]
-        col_type = self.get_type_of_column(column, col_list)
-        if (col_type == int or col_type == datetime):
+        col_list = [row[column] for row in self.data]
+        col_type = DataFrame.get_type_of_column(col_list)
+        if col_type == int or col_type == datetime:
             col_list = sorted(col_list)
-            if (len(col_list) % 2 == 1):
+            if len(col_list) % 2 == 1:
                 median = (len(col_list) + 1) / 2
                 return col_list[median]
             else:
                 median_1 = len(col_list) / 2
-                median_2 = median_1 + 1
-                return (col_list[median_1] + col_list[median_2]) / 2
+                return col_list[median_1/2]
         else:
             raise TypeError('The values in the column are strings and this operation cannot be performed.')
 
     # Class method to return 'Mean' value of a column
-    @classmethod
     def mean(self, column):
-        col_list = [row[column] for row in df.data]
-        col_type = self.get_type_of_column(column, col_list)
+        col_list = [row[column] for row in self.data]
+        col_type = DataFrame.get_type_of_column(col_list)
         summ = 0
-        if (col_type == int):
+        if col_type == int:
             for col in col_list:
-                summ = summ + int(col)
+                summ += int(col)
             mean = summ / len(col_list)
             return mean
         else:
             raise TypeError('The values in the column are strings and this operation cannot be performed.')
 
     # Class method to return 'Sum' value of a column
-    @classmethod
     def sum(self, column):
-        col_list = [row[column] for row in df.data]
-        col_type = self.get_type_of_column(column, col_list)
+        col_list = [row[column] for row in self.data]
+        col_type = DataFrame.get_type_of_column(col_list)
         summ = 0
         if col_type == int:
             for col in col_list:
@@ -124,14 +118,13 @@ class DataFrame(object):
             raise TypeError('The values in the column are strings and this operation cannot be performed.')
 
     # Class method to return 'Standard Deviation' value of a column
-    @classmethod
     def std(self, column):
-        col_list = [row[column] for row in df.data]
-        col_type = self.get_type_of_column(column, col_list)
+        col_list = [row[column] for row in self.data]
+        col_type = DataFrame.get_type_of_column(col_list)
         sum = 0
-        if (col_type == int):
+        if col_type == int:
             for col in col_list:
-                sum = sum + int(col)
+                sum += int(col)
             num_items = len(col_list)
             mean = sum / num_items
             differences = [int(x) - mean for x in col_list]
@@ -139,7 +132,7 @@ class DataFrame(object):
             for d in differences:
                 lis = [d ** 2 for d in differences]
             for item in lis:
-                sq_differences = sq_differences + item
+                sq_differences += item
             return sqrt(sq_differences / len(col_list))
         else:
             raise TypeError('The values in the column are strings and this operation cannot be performed.')
@@ -147,27 +140,25 @@ class DataFrame(object):
 
     # ******************Task-#4 ************************************************
     # Class method to add rows into data
-    @classmethod
     def add_rows(self, list_of_lists):
-        length = len(df.data[0])
+        length = len(self.data[0])
         for row in list_of_lists:
-            if (len(row) == length):
-                df.data.append(row)
+            if len(row) == length:
+                self.data.append(row)
             else:
                 raise ValueError('The length of the row does not match to that of the existing data')
-        df.data = [OrderedDict(zip(df.header, row)) for row in df.data]
+        self.data = [OrderedDict(zip(self.header, row)) for row in self.data]
     # ******************End of Task-#4 ************************************************
 
     # ******************Task-#5 ************************************************
     # Class method to add a column into data
-    @classmethod
     def add_columns(self, list_of_values, col_name):
-        length_rows_data = len(df.data)
+        length_rows_data = len(self.data)
         length_values = len(list_of_values)
-        if (length_rows_data == length_values):
-            for index, headername in enumerate(df.header):
-                df.data[index][col_name] = list_of_values[index]
-            df.header.append(col_name)
+        if length_rows_data == length_values:
+            for index, header_name in enumerate(self.header):
+                self.data[index][col_name] = list_of_values[index]
+            self.header.append(col_name)
         else:
             raise ValueError('The length of the column does not match to that of the existing data')
     # ******************End of Task-#5 ************************************************
