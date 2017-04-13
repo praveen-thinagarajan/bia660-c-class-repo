@@ -211,13 +211,6 @@ class FlightsExplore:
         cleaned_flight_df = pd.DataFrame(flight_data_list, columns=['Start_Date', 'Price'])
         df = pd.DataFrame(cleaned_flight_df, columns=['Price', 'Start_Date'])
 
-        cleaned_flight_df['Price'][1] = 500
-        cleaned_flight_df['Price'][2] = 500
-        cleaned_flight_df['Price'][3] = 500
-        cleaned_flight_df['Price'][4] = 500
-        cleaned_flight_df['Price'][5] = 500
-        cleaned_flight_df['Price'][6] = 500
-
 
         prices_min_max_scaled = MinMaxScaler(feature_range=(-6, 6)).fit_transform(
             cleaned_flight_df['Price'][:, None])
@@ -260,20 +253,21 @@ class FlightsExplore:
                         price_list.append(cleaned_flight_df['Price'][scaled_x_co_ordinate_index])
                         date_list.append(cleaned_flight_df['Start_Date'][scaled_x_co_ordinate_index])
 
-            if statistics.stdev(price_list) < 20 and len(price_list)>1:
-                condition = True
-                for index,price in enumerate(price_list):
-                    add_list = []
-                    for i in range(0,5):
-                        if index+i+1 < len(price_list):
-                            dif = abs(price_list[index+1] - price_list[index])
-                            if dif > 20:
-                                condition =False
-                            add_list.append([FlightsExplore.date_of_flight[date_list[index]],price_list[index]])
+            if len(price_list)>1:
+                if statistics.stdev(price_list) < 20:
+                    condition = True
+                    for index,price in enumerate(price_list):
+                        add_list = []
+                        for i in range(0,5):
+                            if index+i+1 < len(price_list):
+                                dif = abs(price_list[index+1] - price_list[index])
+                                if dif > 20:
+                                    condition =False
+                                add_list.append([FlightsExplore.date_of_flight[date_list[index]],price_list[index]])
 
-                    if condition:
-                        print "********Printing an observed contiguous list******8"
-                        print add_list
+                        if condition:
+                            print "********Printing an observed contiguous list******8"
+                            print add_list
 
 
     # Finding outliers using IQR method
@@ -313,12 +307,12 @@ print 'Started...'
 # flight_dataframe = FlightsExplore.scrape_data(datetime.datetime(2017, 5, 23, 0, 0),'New York City','Germany','Berlin')
 flight_dataframe = FlightsExplore.scrape_data(datetime.datetime(2017, 8, 27, 0, 0),'New York City','India','Goa')
 # flight_next90_dataframe = FlightsExplore.scrape_data_90(datetime.datetime(2017, 6, 27, 0, 0),'New York City','Germany','Berlin')
-# print flight_dataframe
-print 'End of 1st 60...'
-# print flight_next90_dataframe
+# # print flight_dataframe
+# print 'End of 1st 60...'
+# # print flight_next90_dataframe
 # mistake_prices = FlightsExplore.task_3_dbscan(flight_dataframe)
 # mistake_prices = FlightsExplore.task_3_dbscan(flight_next90_dataframe)
-# print mistake_prices
+# # print mistake_prices
 # FlightsExplore.task_3_IQR(flight_dataframe)
 # FlightsExplore.task_3_IQR(flight_next90_dataframe)
 FlightsExplore.task_4_dbscan(flight_dataframe)
